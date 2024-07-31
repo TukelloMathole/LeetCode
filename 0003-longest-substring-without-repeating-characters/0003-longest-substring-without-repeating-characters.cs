@@ -4,17 +4,18 @@ public class Solution {
         
         int left = 0, right = 0;
         int maxLength = 0;
-        HashSet<char> set = new HashSet<char>();
+        Dictionary<char, int> charIndexMap = new Dictionary<char, int>();
         
         while (right < s.Length) {
-            if (!set.Contains(s[right])) {
-                set.Add(s[right]);
-                right++;
-                maxLength = Math.Max(maxLength, right - left);
-            } else {
-                set.Remove(s[left]);
-                left++;
+            if (charIndexMap.ContainsKey(s[right])) {
+                left = Math.Max(charIndexMap[s[right]] + 1, left);
             }
+            
+            charIndexMap[s[right]] = right;
+            
+            maxLength = Math.Max(maxLength, right - left + 1);
+            
+            right++;
         }
         
         return maxLength;
